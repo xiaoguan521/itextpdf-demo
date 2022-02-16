@@ -25,7 +25,7 @@ public class PdfHeaderFooter extends PdfPageEventHelper {
 
     @Override
     public void onOpenDocument(PdfWriter writer, Document document) {
-        total = writer.getDirectContent().createTemplate(30, 16);
+        total = writer.getDirectContent().createTemplate(50, 16);
     }
 
     @Override
@@ -55,10 +55,10 @@ public class PdfHeaderFooter extends PdfPageEventHelper {
         PdfPTable table = new PdfPTable(4);
         try {
             table.setWidths(new int[]{
-                2, 2, 1, 1
+                2, 2, 2, 2
             });
-            table.setWidthPercentage(90F);//占据百分百宽度
-            table.setTotalWidth(500F);
+            table.setWidthPercentage(100F);//占据百分百宽度
+            table.setTotalWidth(600F);
             PdfPCell cell1 = new PdfPCell(new Phrase(text1, fontDetail));
             PdfPCell cell2 = new PdfPCell(new Phrase(text2, fontDetail));
             PdfPCell cell3 = new PdfPCell(new Phrase(text3, fontDetail));

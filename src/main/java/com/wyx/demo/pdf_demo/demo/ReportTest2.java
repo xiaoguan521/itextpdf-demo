@@ -81,7 +81,7 @@ public class ReportTest2 {
 //        }
         //测试分页效果
         int s=1;
-        for (int i = 1; i < 300000; i++) {
+        for (int i = 1; i < 1901; i++) {
             for (Txt txt : txts) {
                 tableBox.addCell(PdfFontUtil2.getCell(new Phrase(PdfFontUtil2.getFont(5, txt.getSampleName() + ">>>" + i)), false, 1, 1, Element.ALIGN_CENTER));
                 tableBox.addCell(PdfFontUtil2.getCell(new Phrase(String.valueOf(PdfFontUtil2.getFont(5, "" + txt.getAllReadsNum()))), false, 1, 1, Element.ALIGN_CENTER));
@@ -89,7 +89,7 @@ public class ReportTest2 {
                 tableBox.addCell(PdfFontUtil2.getCell(new Phrase(String.valueOf(PdfFontUtil2.getFont(5, "" + txt.getCreateTime()))), false, 1, 1, Element.ALIGN_CENTER));
 
             }
-            if (i % 18== 0) {
+            if (i % 19== 0) {
                 s++;
                 doc.add(tabletitle);
                 doc.add(tableBox);
