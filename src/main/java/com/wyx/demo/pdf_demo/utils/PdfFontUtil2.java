@@ -49,7 +49,8 @@ public class PdfFontUtil2 {
 
     /**
      * 文档超级  排版
-     * @param type 1-标题 2-标题一  3-标题二 4-标题三  5-正文  6-左对齐
+     *
+     * @param type 1-标题 2-标题一  3-标题二 4-标题三  5-正文  6-左对齐 7-右对齐
      */
     public static Paragraph getFont(int type, String text){
         Font font = new Font(baseFont);
@@ -67,7 +68,9 @@ public class PdfFontUtil2 {
         } else if(5 == type){//5-正文
 //            font.setSize(10.5f);
             font.setSize(8f);
-        } else if(6 == type){//6-左对齐
+        } else if (6 == type) {//6-左对齐
+            font.setSize(10.5f);
+        } else if (7 == type) {//6-左对齐
             font.setSize(10.5f);
         } else {
             font.setSize(10.5f);//默认大小
@@ -94,8 +97,13 @@ public class PdfFontUtil2 {
             paragraph.setFirstLineIndent(24);//首行缩进
             paragraph.setSpacingBefore(1f);//上间距
             paragraph.setSpacingAfter(1f);//下间距
-        } else if(6 == type){//左对齐
+        } else if (6 == type) {//左对齐
             paragraph.setAlignment(Element.ALIGN_LEFT);
+            paragraph.setSpacingBefore(1f);//上间距
+            paragraph.setSpacingAfter(1f);//下间距
+        } else if (7 == type) {//右对齐
+            paragraph.setAlignment(Element.ALIGN_RIGHT);//右对齐
+            paragraph.setAlignment(Element.ALIGN_RIGHT);
             paragraph.setSpacingBefore(1f);//上间距
             paragraph.setSpacingAfter(1f);//下间距
         }
@@ -122,6 +130,8 @@ public class PdfFontUtil2 {
         PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(outpath));
         //PDF版本(默认1.4)
         writer.setPdfVersion(PdfWriter.PDF_VERSION_1_2);
+        //使用自定义模板
+        writer.setPageEvent(new PdfHeaderFooter());
         //文档属性
         doc.addTitle("Title@wpixel");
         doc.addAuthor("Author@wpixel");
@@ -136,16 +146,20 @@ public class PdfFontUtil2 {
     }
 
     //每个cell的格式，合并单元格情况
-    public static PdfPCell getCell(Phrase phrase, boolean yellowFlag, int colSpan, int rowSpan) {
+    public static PdfPCell getCell(Phrase phrase, boolean isborder, int colSpan, int rowSpan,int align) {
         PdfPCell cells = new PdfPCell(phrase);
         cells.setUseAscender(true);
         cells.setMinimumHeight(20f);
-        cells.setHorizontalAlignment(1);
+        cells.setHorizontalAlignment(align);
         cells.setVerticalAlignment(5);
         cells.setColspan(colSpan);
         cells.setRowspan(rowSpan);
         cells.setNoWrap(false);
+        if (isborder) {
+            cells.setBorder(Rectangle.NO_BORDER);
+        }
         return cells;
     }
+
 
 }
