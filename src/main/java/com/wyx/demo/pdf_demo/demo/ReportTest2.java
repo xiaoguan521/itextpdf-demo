@@ -54,34 +54,16 @@ public class ReportTest2 {
         tabletitle.setWidthPercentage(90f);
         tabletitle.addCell(PdfFontUtil2.getCell(new Phrase((PdfFontUtil2.getFont(6, "名字：" + "张三"))), true, 1, 1, Element.ALIGN_LEFT));
         tabletitle.addCell(PdfFontUtil2.getCell(new Phrase((PdfFontUtil2.getFont(7, "年龄：" + "12"))), true, 1, 1, Element.ALIGN_RIGHT));
-        // 设置页眉页脚
-//        String var1 = "制表人:xxx" + "第： ";
-//        Date d = new Date();
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        String var2 = " 页，打印日期" + sdf.format(d);
-//        BaseFont baseFont = null;
-//        String path = "C:\\Windows\\Fonts\\simsun.ttc";//使用win字体 simsun.ttc
-//        path = "/fonts/simsun.ttc";
-//        baseFont = BaseFont.createFont(path + ",1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-//        Font f3 = new Font(baseFont);
-//        HeaderFooter footer = new HeaderFooter(new Phrase(var1 + "", f3), new Phrase(var2 + "", f3));
-//        footer.setBorder(Rectangle.NO_BORDER);
-//        footer.setAlignment(Element.ALIGN_RIGHT);
-//        doc.setFooter(footer);
+
         //获取txt文本集合
         List<Txt> txts = new ArrayList<Txt>() {{
             this.add(new Txt(1L, 1L, "PATH", "TXTpATH", "样本名1", 20000L, 18000L, 290139L));
             this.add(new Txt(2L, 2L, "PATH1", "TXTpATH1", "样本名2", 20000L, 18000L, 290139L));
             this.add(new Txt(3L, 3L, "PATH2", "TXTpATH2", "样本名3", 20000L, 18000L, 290139L));
         }};
-//        for (Txt txt : txts) {
-//            tableBox.addCell(PdfFontUtil2.getCell(new Phrase(PdfFontUtil2.getFont(5, txt.getSampleName())), false, 1, 1, Element.ALIGN_CENTER));
-//            tableBox.addCell(PdfFontUtil2.getCell(new Phrase(String.valueOf(PdfFontUtil2.getFont(5, "" + txt.getAllReadsNum()))), false, 1, 1, Element.ALIGN_CENTER));
-//            tableBox.addCell(PdfFontUtil2.getCell(new Phrase(String.valueOf(PdfFontUtil2.getFont(5, "" + txt.getMatchNum()))), false, 1, 1, Element.ALIGN_CENTER));
-//        }
-        //测试分页效果
+
         int s=1;
-        for (int i = 1; i < 1901; i++) {
+        for (int i = 1; i < 191; i++) {
             for (Txt txt : txts) {
                 tableBox.addCell(PdfFontUtil2.getCell(new Phrase(PdfFontUtil2.getFont(5, txt.getSampleName() + ">>>" + i)), false, 1, 1, Element.ALIGN_CENTER));
                 tableBox.addCell(PdfFontUtil2.getCell(new Phrase(String.valueOf(PdfFontUtil2.getFont(5, "" + txt.getAllReadsNum()))), false, 1, 1, Element.ALIGN_CENTER));
@@ -94,8 +76,6 @@ public class ReportTest2 {
                 doc.add(tabletitle);
                 doc.add(tableBox);
                 tableBox.deleteBodyRows();
-                System.out.println("************"+i);
-                System.out.println("第，，，"+s+"页");
                 doc.newPage();
 //                tableBox.setSkipFirstHeader(true);//防止释放后一页出现两次表头。
             }

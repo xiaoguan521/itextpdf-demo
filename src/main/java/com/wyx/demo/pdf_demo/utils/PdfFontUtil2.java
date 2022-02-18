@@ -1,13 +1,14 @@
 package com.wyx.demo.pdf_demo.utils;
 
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.Font;
+import com.lowagie.text.Image;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.awt.*;
+import java.io.*;
+import java.security.*;
 
 /**
  * @ClassName PdfFontUtil2
@@ -133,15 +134,108 @@ public class PdfFontUtil2 {
         //使用自定义模板
         writer.setPageEvent(new PdfHeaderFooter());
         //文档属性
+        //设置标题
         doc.addTitle("Title@wpixel");
+        //设置作者
         doc.addAuthor("Author@wpixel");
+        //设置主题
         doc.addSubject("Subject@wpixel");
+        //设置关键字
         doc.addKeywords("Keywords@wpixel");
+        //设置创建者
         doc.addCreator("Creator@wpixel");
+        //设置创建日期
+        doc.addCreationDate();
+        // 设置生产者
+        doc.addProducer();
         //页边空白
         doc.setMargins(20, 20, 20, 20);
         //打开文档
+        // 设置用户密码, 所有者密码,用户权限,所有者权限
+        //PdfWriter.ALLOW_MODIFY_CONTENTS
+        //允许打印,编辑，复制，签名 加密级别：40-bit-RC4
+        //PdfWriter.ALLOW_COPY
+        //**允许复制，签名 不允许打印，编辑 加密级别：40-bit-RC ***
+        //PdfWriter.ALLOW_MODIFY_ANNOTATIONS
+        //允许打印,编辑，复制，签名 加密级别：40-bit-RC4
+        //PdfWriter.ALLOW_FILL_IN
+        //允许打印,编辑，复制，签名 加密级别：40-bit-RC4
+        //PdfWriter.ALLOW_SCREENREADERS
+        //允许打印,编辑，复制，签名 加密级别：40-bit-RC4
+        //PdfWriter.ALLOW_ASSEMBLY
+        //允许打印,编辑，复制，签名 加密级别：40-bit-RC4
+        //PdfWriter.EMBEDDED_FILES_ONLY
+        //允许打印,编辑，复制，签名 加密级别：40-bit-RC4
+        //PdfWriter.DO_NOT_ENCRYPT_METADATA
+        //允许打印,编辑，复制，签名 加密级别：40-bit-RC4
+        //PdfWriter.ENCRYPTION_AES_256
+        //允许打印,编辑，复制，签名 加密级别：256-bit-AES
+        //PdfWriter.ENCRYPTION_AES_128
+        //允许打印,编辑，复制，签名 加密级别：128-bit-AES
+        //PdfWriter.STANDARD_ENCRYPTION_128
+        //允许打印,编辑，复制，签名 加密级别：128-bit-RC4
+        //PdfWriter.STANDARD_ENCRYPTION_40
+        //允许打印,编辑，复制，签名 加密级别：40-bit-RC4
+        //原文链接：https://blog.csdn.net/tomatocc/article/details/80667838
+//        writer.setEncryption("userpassword".getBytes(), "ownerPassword".getBytes(), PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_128);
         doc.open();
+//        // 加入水印
+//        PdfContentByte waterMar = writer.getDirectContentUnder();
+//        // 开始设置水印
+//        waterMar.beginText();
+//        // 设置水印透明度
+//        PdfGState gs = new PdfGState();
+//        // 设置填充字体不透明度为0.4f
+//        gs.setFillOpacity(0.4f);
+//        try {
+//            String path = "C:\\Windows\\Fonts\\simsun.ttc";//使用win字体 simsun.ttc
+//            path =  "/fonts/simsun.ttc";
+//            baseFont = BaseFont.createFont(path + ",1" , BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+//            // 设置水印字体参数及大小                                  (字体参数，字体编码格式，是否将字体信息嵌入到pdf中（一般不需要嵌入），字体大小)
+//            waterMar.setFontAndSize(baseFont, 60);
+//            // 设置透明度
+//            waterMar.setGState(gs);
+//            // 设置水印对齐方式 水印内容 X坐标 Y坐标 旋转角度
+//            waterMar.showTextAligned(Element.ALIGN_RIGHT, "一句话六六六" , 500, 430, 45);
+//            // 设置水印颜色
+//            waterMar.setColorFill(Color.GRAY);
+//            //结束设置
+//            waterMar.endText();
+//            waterMar.stroke();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }finally {
+//            waterMar = null;
+//            gs = null;
+//        }
+//        try {
+//            //图片水印
+//            Image image = Image.getInstance("F:\\Ddemo\\itext\\123.jpg");
+//            // 设置坐标 绝对位置 X Y
+//            image.setAbsolutePosition(10, 100);
+//            // 设置旋转弧度
+//            image.setRotation(30);// 旋转 弧度
+//            // 设置旋转角度
+//            image.setRotationDegrees(45);// 旋转 角度
+//            // 设置等比缩放
+//            image.scalePercent(40);// 依照比例缩放
+//            // image.scaleAbsolute(200,100);//自定义大小
+//            // 设置透明度
+//            waterMar.setGState(gs);
+//            // 添加水印图片
+//            waterMar.addImage(image);
+//
+//            //结束设置
+//            waterMar.endText();
+//            waterMar.stroke();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }finally {
+//            waterMar = null;
+//            gs = null;
+//        }
+
+
         return doc;
     }
 
@@ -161,5 +255,71 @@ public class PdfFontUtil2 {
         return cells;
     }
 
+    //对pdf文档进行加密和权限设置 在179行实现
+    /**
+     *
+     * @param src 需要签章的pdf文件路径
+     * @param dest  签完章的pdf文件路径
+     * @param p12Stream p12 路径
+     * @param password
+     * @param reason 签名的原因，显示在pdf签名属性中，随便填
+     * @param location 签名的地点，显示在pdf签名属性中，随便填
+     * @param chapterPath 签章图片路径
+     */
+//    public static void sign(InputStream src, OutputStream dest, InputStream p12Stream, char[]password, String reason, String location, String chapterPath){
+//
+//        try {
+//            //读取keystore,获取私钥和证书链
+//            KeyStore ks = KeyStore.getInstance("PKCS12");
+//            ks.load(p12Stream, password);
+//            String alias = (String) ks.aliases().nextElement();
+//            PrivateKey pk = (PrivateKey) ks.getKey(alias, password);
+//            Certificate[] chain = (Certificate[]) ks.getCertificateChain(alias);
+//            // Creating the reader and the stamper，开始pdfreader
+//            PdfReader reader = new PdfReader(src);
+//            //创建签章工具，最后一个boolean参数
+//            // false的话，pdf文件只允许被签名一次，多次签名，最后一次有效
+//            // true的话，pdf可以被追加签名，验签工具可以识别出每次签名之后文档是否被修改
+//            PdfStamper stamper = PdfStamper.createSignature(reader, dest, '\0', null, false);
+//            // 获取数字签章属性对象，设定数字签章的属性
+//            PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
+//            appearance.setReason(reason);
+//            appearance.setLocation(location);
+//            //设置签名的位置，页码，签名域名称，多次追加签名的时候，签名预名称不能一样 图片大小受表单域大小影响（过小导致压缩）
+//            //签名的位置，是图章相对于pdf页面的位置坐标，原点为pdf页面左下角
+//            //四个参数的分别是，图章左下角x，图章左下角y，图章右上角x，图章右上角y
+//            appearance.setVisibleSignature(new Rectangle(300, 600, 630, 500), 1, "sig1");
+//            //读取图章图片，这个image是itext包的image
+//            Image image = Image.getInstance(chapterPath);
+//            appearance.setSignatureGraphic(image);
+//            appearance.setCertificationLevel(PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED);
+//
+//            //设置图章的显示方式，如下选择的是只显示图章（还有其他的模式，可以图章和签名描述一同显示）
+////            appearance.setRenderingMode(PdfSignatureAppearance.RenderingMode.GRAPHIC);
+//            appearance.setRender(PdfSignatureAppearance.SignatureRenderNameAndDescription);
+//
+//            // 摘要算法
+////            ExternalDigest digest = new BouncyCastleDigest();
+////            // 签名算法
+////            ExternalSignature signature = new PrivateKeySignature(pk, DigestAlgorithms.SHA256, null);
+////            //  进行盖章操作 CMS高级电子签名(CAdES)的长效签名规范 调用itext签名方法完成pdf签章CryptoStandard.CMS 签名方式，建议采用这种
+////            MakeSignature.signDetached(appearance, digest, signature, chain, null, null, null, 0, MakeSignature.CryptoStandard.CMS);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (DocumentException e) {
+//            e.printStackTrace();
+//        } catch (UnrecoverableKeyException e) {
+//            e.printStackTrace();
+//        }   catch (KeyStoreException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        } catch (GeneralSecurityException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
 
 }
